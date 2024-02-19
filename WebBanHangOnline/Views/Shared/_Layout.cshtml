@@ -6,7 +6,7 @@
     <meta name="keywords" content="Male_Fashion, unica, creative, html" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Male-Fashion | Template</title>
+    <title>Male - Fashion</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
@@ -63,7 +63,7 @@
     </div>
     <!-- Offcanvas Menu End -->
     <!-- Header Section Begin -->
-    <header class="header">
+    <header class="header" style="position: fixed; z-index: 10; width: 100%;">
         <div class="header__top">
             <div class="container">
                 <div class="row">
@@ -109,8 +109,8 @@
                             <img src="../../content/layout/img/icon/search.png" alt="" />
                         </a>
                         <a href="#"><img src="../../content/layout/img/icon/heart.png" alt="" /></a>
-                        <a href="#"><img src="../../content/layout/img/icon/cart.png" alt="" /> <span>0</span></a>
-                        <div class="price">$0.00</div>
+                        <a href="/gio-hang"><img src="../../content/layout/img/icon/cart.png" alt="" /> <span id="checkout_items" style="width: 24px; height: 23px; position: absolute; background: #e53637; color: #fff; text-align: center; border-radius: 50%; transform: translateY(-20px); font-size: 15px; ">0</span></a>
+                        @*<div class="price">$0.00</div>*@
                     </div>
                 </div>
             </div>
@@ -220,6 +220,7 @@
     <script src="~/Content/layout/js/owl.carousel.min.js"></script>
     <script src="~/Content/layout/js/main.js"></script>
 
+    <script src="~/Scripts/jsShopping.js"></script>
 
     @RenderSection("scripts", required: false)
 </body>
