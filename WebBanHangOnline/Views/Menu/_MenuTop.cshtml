@@ -1,0 +1,15 @@
+﻿﻿@model IEnumerable<WebBanHangOnline.Models.EF.Category>
+
+@if (Model != null && Model.Any())
+{
+    <ul>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <li><a href="/@item.Alias">@item.Title</a></li>
+            }
+
+        }
+    </ul>
+}

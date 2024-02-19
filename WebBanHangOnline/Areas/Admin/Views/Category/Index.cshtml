@@ -1,0 +1,105 @@
+﻿@model IEnumerable<WebBanHangOnline.Models.EF.Category>
+@{
+    ViewBag.Title = "Danh mục";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row page-titles mx-0">
+    <div class="col p-md-0">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/admin/home">Trang chủ</a></li>
+            <li class="breadcrumb-item active"><a href="/admin/category">Danh mục</a></li>
+        </ol>
+    </div>
+</div>
+<!-- row -->
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="dt-buttons" style=" display:flex; justify-content: flex-end;">
+                        <a href="/admin/category/add" class="dt-button add-new btn btn-primary ms-2" style="font-size: 1rem">
+                            <span><i class="bx bx-plus me-0 me-sm-1"></i>Thêm mới</span>
+                        </a>
+                    </div>
+                    <div class="table-responsive text-nowrap">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="text-center fw-bold">#</th>
+                                    <th class="text-center fw-bold">Tên danh mục</th>
+                                    <th class="text-center fw-bold">Thứ tự</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-border-bottom-0">
+                                @if (Model != null && Model.Any())
+                                {
+                                    var i = 1;
+                                    foreach (var item in Model)
+                                    {
+                                        <tr id="trow_@item.Id">
+                                            <td class="text-center" style="vertical-align: middle;">@i</td>
+                                            <td class="text-center" style="vertical-align: middle;">@item.Title</td>
+                                            <td class="text-center" style="vertical-align: middle;">@item.Position</td>
+                                            <td class="" style="">
+                                                <div class="d-flex align-items-sm-center justify-content-sm-center">
+                                                    <a href="/admin/category/edit/@item.Id" class="btn btn-sm btn-icon ">
+                                                        <i class="fa fa-pencil-square-o" style=" padding: 5px 20px 0 0; font-size: 18px; "></i>
+                                                    </a>
+
+                                                    <a href="#" data-id="@item.Id" class="btn btnDelete btn-sm btn-icon  me-2">
+                                                        <i class="fa fa-trash" style="font-size: 18px; padding-top: 2px"></i>
+                                                    </a>
+
+                                                </div>
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                        i++;
+                                    }
+
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="4">Không có bản ghi nào</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #/ container -->
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('body').on('click', '.btnDelete', function () {
+                var id = $(this).data("id");
+
+                var conf = confirm('Bạn có muốn xóa bản ghi này không?');
+
+                if (conf === true) {
+                    $.ajax({
+                        url: '/admin/category/delete',
+                        type: 'POST',
+                        data: { id: id },
+                        success: function (rs) {
+                            if (rs.success) {
+                                $('#trow_' + id).remove();
+                            }
+                        }
+                    });
+                }
+            })
+        })
+    </script>
+}

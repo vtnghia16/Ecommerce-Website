@@ -1,0 +1,58 @@
+﻿﻿@model IEnumerable<WebBanHangOnline.Models.EF.ProductCategory>
+
+@if (Model != null && Model.Any())
+{
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                if (item.Title == "Quần áo")
+                {
+                    <div class="col-lg-7 offset-lg-4">
+                        <div class="banner__item">
+                            <div class="banner__item__pic">
+                                <img src="@item.Icon" alt="@item.Title" />
+                            </div>
+                            <div class="banner__item__text">
+                                <h2>@item.Title</h2>
+                                <a href="#">Shop now</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else if (item.Title == "Giày dép")
+                {
+                    <div class="col-lg-5">
+                        <div class="banner__item banner__item--middle">
+                            <div class="banner__item__pic">
+                                <img src="@item.Icon" alt="@item.Title" />
+                            </div>
+                            <div class="banner__item__text">
+                                <h2>@item.Title</h2>
+                                <a href="#">Shop now</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-lg-7">
+                        <div class="banner__item banner__item--last">
+                            <div class="banner__item__pic">
+                                <img src="@item.Icon" alt="@item.Title" />
+                            </div>
+                            <div class="banner__item__text">
+                                <h2>@item.Title</h2>
+                                <a href="#">Shop now</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+
+            }
+
+        </div>
+    </div>
+}

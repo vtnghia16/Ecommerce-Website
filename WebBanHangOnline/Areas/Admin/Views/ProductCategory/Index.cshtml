@@ -1,0 +1,169 @@
+﻿@model IEnumerable<WebBanHangOnline.Models.EF.ProductCategory>
+
+@{
+    ViewBag.Title = "Danh mục sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row page-titles mx-0">
+    <div class="col p-md-0">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/admin/home">Trang chủ</a></li>
+            <li class="breadcrumb-item active"><a href="/admin/productcategory">Danh mục sản phẩm</a></li>
+        </ol>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="dt-buttons" style=" display:flex; justify-content: flex-end;">
+                        <a href="/admin/productcategory/add" class="dt-button add-new btn btn-primary" style="font-size: 1rem; margin-right: 8px">
+                            <span><i class="bx bx-plus me-0 me-sm-1"></i>Thêm mới</span>
+                        </a>
+                        <a href="#" class="dt-button btn btn-danger" id="BtnDeleteAll" style=" font-size: 1rem;">
+                            <span>Xóa tất cả</span>
+                        </a>
+                    </div>
+                    <div class="table-responsive text-nowrap">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <input class="form-check-input" type="checkbox" id="SelectAll" />
+                                    </th>
+                                    <th class="fw-bold">STT</th>
+                                    <th class=" fw-bold">ICON</th>
+                                    <th class="text-center fw-bold">TIÊU ĐỀ</th>
+                                    <th class="text-center fw-bold">NGÀY TẠO</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-border-bottom-0">
+                                @if (Model != null && Model.Any())
+                                {
+                                    var i = 1;
+                                    foreach (var item in Model)
+                                    {
+                                        <tr id="trow_@item.Id">
+                                            <td style="vertical-align: middle;"><input type="checkbox" style=" width: 14px; height: 14px;" class="form-check-input" value="@item.Id" /></td>
+                                            <td style="vertical-align: middle;">@i</td>
+                                            <td><img class="text-center" src="@item.Icon" width="50" /></td>
+                                            <td class="text-center" style="vertical-align: middle;">@item.Title</td>
+                                            <td class="text-center" style="vertical-align: middle;">@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                                            <td>
+                                                <div class="d-flex align-items-sm-center justify-content-sm-center">
+                                                    <a href="/admin/productcategory/edit/@item.Id" class="btn btn-sm btn-icon">
+                                                        <i class="fa fa-pencil-square-o" style="padding: 5px 20px 0 0; font-size: 18px;"></i>
+                                                    </a>
+
+                                                    <a href="#" data-id="@item.Id" class="btn btnDelete btn-sm btn-icon  ">
+                                                        <i class="fa fa-trash" style="font-size: 18px; padding-top: 2px"></i>
+                                                    </a>
+
+                                                </div>
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                        i++;
+                                    }
+
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="8">Không có bản ghi nào</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #/ container -->
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('body').on('click', '#BtnDeleteAll', function (e) {
+                e.preventDefault();
+                var checkbox = $(this).parents('.card').find('tr td input:checkbox');
+
+                var str = "";
+                var i = 0;
+                checkbox.each(function () {
+                    if (this.checked) {
+                        checkbox.attr('selected', 'checked');
+                        var _id = $(this).val();
+                        if (i === 0) {
+                            str += _id;
+                        }
+                        else {
+                            str += "," + _id;
+                        }
+                        i++;
+                    }
+                    else {
+                        checkbox.attr('selected', '');
+                    }
+                });
+                if (str.length > 0) {
+                    var conf = confirm("Bạn có muốn xóa các bản ghi này không ?");
+                    if (conf === true) {
+                        $.ajax({
+                            url: '/admin/productcategory/deleteAll',
+                            type: 'POST',
+                            data: { ids: str },
+                            success: function (rs) {
+                                if (rs.success) {
+                                    location.reload();
+                                }
+                            }
+                        })
+                    }
+                }
+            });
+            $('body').on('change', '#SelectAll', function () {
+                var checkStatus = this.checked;
+                var checkbox = $(this).parents('.card-body').find('tr td input:checkbox');
+                checkbox.each(function () {
+                    this.checked = checkStatus;
+                    if (this.checked) {
+                        checkbox.attr('selected', 'checked');
+                    }
+                    else {
+                        checkbox.attr('selected', '');
+                    }
+                })
+            });
+            $('body').on('click', '.btnDelete', function () {
+                var id = $(this).data("id");
+
+                var conf = confirm('Bạn có muốn xóa bản ghi này không?');
+
+                if (conf === true) {
+                    $.ajax({
+                        url: '/admin/productcategory/delete',
+                        type: 'POST',
+                        data: { id: id },
+                        success: function (rs) {
+                            if (rs.success) {
+                                $('#trow_' + id).remove();
+                            }
+                        }
+                    });
+                }
+            })
+
+        })
+    </script>
+}
+

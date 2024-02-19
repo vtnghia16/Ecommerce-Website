@@ -1,0 +1,125 @@
+﻿@model IEnumerable<WebBanHangOnline.Models.EF.ProductImage>
+@{
+    ViewBag.Title = "Ảnh sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutEmpty.cshtml";
+}
+
+<style>
+    .box:not(:last-child) {
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .btn i {
+        font-size: 20px;
+    }
+
+    img {
+        margin-left: 30px;
+    }
+</style>
+
+<section class="content">
+    <div class="card-header" style="display: flex; justify-content: end;">
+        <a href="#" class="dt-button add-new btn btn-primary" onclick="BrowseServer('txtImage')" style=" font-size: 1rem; margin-right: 8px">
+            <span><i class="bx bx-plus me-0 me-sm-1"></i>Thêm ảnh</span>
+        </a>
+
+        <a href="#" class="dt-button btn btn-danger" id="BtnDeleteAll" style=" font-size: 1rem;">
+            <span>Xóa tất cả</span>
+        </a>
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table">
+                <tbody>
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr id="trow_@item.Id" class="box">
+                                <td>
+                                    @if (item.IsDefault)
+                                    {
+                                        <a href="#" data-id="@item.Id" class="btn btn-sm btn-success btnDefault">
+                                            <i class="fa fa-check"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a href="#" data-id="@item.Id" class="btn btn-sm btn-danger btnDefault">
+                                            <i class="fa fa-close"></i>
+                                        </a>
+                                    }
+
+                                    <img src="@item.Image" width="200" />
+
+                                </td>
+
+                                <td>
+                                    <div class="box-btn">
+                                        <a href="#" data-id="@item.Id" class="btn btn-sm  btnDelete">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+
+
+
+
+                                    </div>
+                                </td>
+                            </tr>
+
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<script>
+
+    // Truyền URL image
+    function BrowseServer(field) {
+        var finder = new CKFinder();
+        finder.selectActionFunction = function (fileUrl) {
+            AddImage(@ViewBag.productID,fileUrl);
+        };
+        finder.popup();
+    };
+
+    function AddImage(id, url) {
+        $.ajax({
+            url: '/admin/productimage/AddImage',
+            type: 'POST',
+            data: { productId: id, url : url },
+            success: function (rs) {
+                if (rs.Success) {
+                    window.location.reload();
+                }
+            }
+        });
+    };
+
+    $(document).ready(function () {
+        $('body').on('click', '.btnDelete', function () {
+            var id = $(this).data('id');
+
+            var conf = confirm('Bạn có muốn xóa bản ghi này không?');
+
+            if (conf === true) {
+                $.ajax({
+                    url: '/admin/productimage/delete',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (rs) {
+                        if (rs.success) {
+                            $('#trow_' + id).remove();
+                        }
+                    }
+                });
+            }
+        })
+    });
+</script>
