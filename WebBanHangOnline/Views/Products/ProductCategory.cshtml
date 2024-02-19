@@ -1,0 +1,150 @@
+﻿@model IEnumerable<WebBanHangOnline.Models.EF.Product>
+@{
+    ViewBag.Title = "Danh sách sản phẩm";
+}
+
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>Danh mục sản phẩm</h4>
+                    <div class="breadcrumb__links">
+                        <a href="/san-pham">Trang chủ</a>
+                        <span>@ViewBag.CateName</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Shop Section Begin -->
+<section class="shop spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="shop__sidebar">
+                    <div class="shop__sidebar__search">
+                        <form action="#">
+                            <input type="text" placeholder="Search...">
+                            <button type="submit"><span class="icon_search"></span></button>
+                        </form>
+                    </div>
+                    <div class="shop__sidebar__accordion">
+                        @Html.Action("MenuLeft", "Menu", new { id = ViewBag.CateId })
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="shop__product__option">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="shop__product__option__left">
+                                <p>Showing 1–12 of 126 results</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="shop__product__option__right">
+                                <p>Sort by Price:</p>
+                                <select>
+                                    <option value="">Low To High</option>
+                                    <option value="">$0 - $55</option>
+                                    <option value="">$55 - $100</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            var strImage = "";
+                            var img = item.ProductImage.FirstOrDefault(x => x.IsDefault);
+                            if (img != null)
+                            {
+                                strImage = img.Image;
+                            }
+
+                            <div class="col-lg-4 col-md-6 col-sm-6 @item.ProductCategory.Alias">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                         data-setbg="@strImage">
+                                        @*<span class="label">New</span>*@
+                                        <ul class="product__hover">
+                                            <li>
+                                                <a href="#"><img src="../../content/layout/img/icon/heart.png" alt="" /></a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <img src="../../content/layout/img/icon/compare.png" alt="" />
+                                                    <span>Compare</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><img src="../../content/layout/img/icon/search.png" alt="" /></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <h6><a href="@item.Alias">@item.Title</a>@item.Title</h6>
+                                        <a href="#" class="add-cart">+ Add To Cart</a>
+                                        <div class="rating">
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                        </div>
+                                        @if (item.PriceSale > 0)
+                                        {
+                                            <div class="product_price" style="display: flex">
+                                                <h5 style="color: #e53637">@WebBanHangOnline.Common.Common.FormatNumber(item.PriceSale, 0)</h5>
+                                                <span style=" text-decoration: line-through; margin-left: 16px;">@WebBanHangOnline.Common.Common.FormatNumber(item.Price, 0)</span>
+                                            </div>
+
+                                        }
+                                        else
+                                        {
+                                            <h5 style="color: #e53637">@WebBanHangOnline.Common.Common.FormatNumber(item.Price, 0)</h5>
+                                        }
+
+                                        <div class="product__color__select">
+                                            <label for="pc-1">
+                                                <input type="radio" id="pc-1" />
+                                            </label>
+                                            <label class="active black" for="pc-2">
+                                                <input type="radio" id="pc-2" />
+                                            </label>
+                                            <label class="grey" for="pc-3">
+                                                <input type="radio" id="pc-3" />
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="product__pagination">
+                            <a class="active" href="#">1</a>
+                            <a href="#">2</a>
+                            <a href="#">3</a>
+                            <span>...</span>
+                            <a href="#">21</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Shop Section End -->

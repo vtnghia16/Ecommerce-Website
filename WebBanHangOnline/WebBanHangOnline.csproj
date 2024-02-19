@@ -5233,6 +5233,7 @@
     <Content Include="Content\layout\img\shopping-cart\cart-3.jpg" />
     <Content Include="Content\layout\img\shopping-cart\cart-4.jpg" />
     <Content Include="Content\layout\js\bootstrap.min.js" />
+    <Content Include="Content\layout\js\categories_custom.js" />
     <Content Include="Content\layout\js\jquery-3.3.1.min.js" />
     <Content Include="Content\layout\js\jquery.countdown.min.js" />
     <Content Include="Content\layout\js\jquery.magnific-popup.min.js" />
@@ -6528,6 +6529,7 @@
     <Content Include="Views\Products\Index.cshtml" />
     <Content Include="Views\Contact\Index.cshtml" />
     <Content Include="Views\Menu\_MenuLeft.cshtml" />
+    <Content Include="Views\Products\ProductCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

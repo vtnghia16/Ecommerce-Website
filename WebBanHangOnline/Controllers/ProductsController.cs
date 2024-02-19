@@ -19,8 +19,33 @@ namespace WebBanHangOnline.Controllers
             var items = db.Products.ToList();
             if(id != null)
             {
-                items = items.Where(x => x.Id == id).ToList();
+                items = items.Where(x => x.ProductCategoryID == id).ToList();
             }
+            return View(items);
+        }
+
+        public ActionResult Detail(int id)
+        {
+            var item = db.Products.Find(id);
+
+            return View(item);
+        }
+
+        public ActionResult ProductCategory(string alias, int id)
+        {
+            var items = db.Products.ToList();
+            if (id > 0)
+            {
+                items = items.Where(x => x.ProductCategoryID == id).ToList();
+            }
+
+            var cate = db.ProductCategories.Find(id);
+            if(cate != null)
+            {
+                ViewBag.CateName = cate.Title;
+            }
+
+            ViewBag.CateId = id;
             return View(items);
         }
 
